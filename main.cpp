@@ -124,10 +124,9 @@ int main(int argc, const char* argv[]) {
       // create new player and begin game
       Player current_player;
       current_player.playGame();
-      cout << current_player.getGuesses() << " total guesses\n";
-      cout << current_player.getName() << " is the name\n";
       leaderboard.InsertPlayer(current_player);
       leaderboard.printLeaders();
+      cout << "NOW STARTING AGAIN";
     }
   }
 }
