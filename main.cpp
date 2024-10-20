@@ -25,6 +25,7 @@ void Player::playGame() {
   // declare struct variables with person's info
   cout << "Please enter your name to start: ";
   cin >> name;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
 
   // prompt user for starting guess game
   int randomNum = rand() % (100 - 10 + 1) + 10;
@@ -57,8 +58,9 @@ class Leaderboard {
     Leaderboard(){this->index = 0;}
     void InsertPlayer(Player& player);
     void ReadLeaders(char fileName[]);
+    void WriteLeaders(char fileName[]);
     void printLeaders();
-    static int compare(Player& a, Player& b);
+    static bool compare(Player& a, Player& b);
 
   private:
     int index;
@@ -67,8 +69,7 @@ class Leaderboard {
 };
 
 void Leaderboard::InsertPlayer(Player& player) {
-  cout << "Now entering Insert function at index " << index;
-  cout << "The player being inserted is " << player.getName() << " with " << player.getGuesses() << " guesses";
+  // insert player at tracked index and sort leaderboard
   leaders[index] = player;
   index++;
   sort(leaders, leaders+index, compare);
@@ -89,6 +90,14 @@ void Leaderboard::ReadLeaders(char fileName[]) {
   }
 }
 
+void Leaderboard::WriteLeaders(char fileName[]) {
+  FILE* file = fopen(fileName, "w");
+
+  for(int i = 0; i < index; i++) {
+    fprintf(file, "%s made %d guesses\n", leaders[i].getName().c_str(), leaders[i].getGuesses());
+  }
+}
+
 void Leaderboard::printLeaders() {
   printf("\n");
   printf("Here are the current leaders: \n");
@@ -98,8 +107,9 @@ void Leaderboard::printLeaders() {
   }
 }
 
-int Leaderboard::compare(Player& a, Player& b) {
-  return a.getGuesses() - b.getGuesses();
+bool Leaderboard::compare(Player& a, Player& b) {
+  // sort leaderboard in ascending order
+  return a.getGuesses() < b.getGuesses();
 }
 
 
@@ -108,8 +118,7 @@ int main(int argc, const char* argv[]) {
   Leaderboard leaderboard;
   char fileName[] = "leaderboard.txt";
   leaderboard.ReadLeaders(fileName);
-  leaderboard.printLeaders();
-
+  
   cout << "Welcome! Press 'q' to quit or any other key to continue:\n";
   char c;
   bool game_over = false;
@@ -117,6 +126,8 @@ int main(int argc, const char* argv[]) {
   while (!game_over) {
     cin >> c;
     if (c == 'q') {
+      // write players to leaderboard to store for next game
+      leaderboard.WriteLeaders(fileName);
       game_over = true;
       cout << "Bye Bye!\n";
     }
@@ -126,7 +137,7 @@ int main(int argc, const char* argv[]) {
       current_player.playGame();
       leaderboard.InsertPlayer(current_player);
       leaderboard.printLeaders();
-      cout << "NOW STARTING AGAIN";
     }
+    cout << "Press 'q' to quit or any other key to continue: ";
   }
 }
