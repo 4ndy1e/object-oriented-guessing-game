@@ -22,7 +22,6 @@ class Player {
 };
 
 void Player::playGame() {
-  // declare struct variables with person's info
   cout << "Please enter your name to start: ";
   cin >> name;
   cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
@@ -76,7 +75,6 @@ void Leaderboard::InsertPlayer(Player& player) {
 }
 
 void Leaderboard::ReadLeaders(char fileName[]) {
-  // add players to struct array
   FILE* file = fopen(fileName, "r");
 
   // define variables for scanning
