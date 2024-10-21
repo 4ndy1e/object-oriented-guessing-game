@@ -99,11 +99,10 @@ void Leaderboard::WriteLeaders(char fileName[]) {
 }
 
 void Leaderboard::printLeaders() {
-  printf("\n");
-  printf("Here are the current leaders: \n");
+  cout << "\nHere are the current leaders: \n";
 
   for(int i = 0; i < index; i++) {
-    printf("%s made %d guesses\n", leaders[i].getName().c_str(), leaders[i].getGuesses());
+    cout << leaders[i].getName() << " made " << leaders[i].getGuesses() << " guesses\n";
   }
 }
 
