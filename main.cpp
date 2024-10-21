@@ -23,8 +23,10 @@ class Player {
 
 void Player::playGame() {
   cout << "Please enter your name to start: ";
-  cin >> name;
-  cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear the input buffer
+
+  // Clear the input buffer and get user's name
+  cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+  getline(cin, name); 
 
   // prompt user for starting guess game
   int randomNum = rand() % (100 - 10 + 1) + 10;
